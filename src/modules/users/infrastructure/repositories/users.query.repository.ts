@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
-import { UserDocument } from '../schemas/user.schema';
+import { UserDocument, UserModel } from '../schemas/user.schema';
 import { User } from '../../domain/entities/user.entity';
 import { UsersQueryParams } from '../../dto/users-query-params.input-dto';
 import { PaginatedViewDto } from '../../../../core/dto/base.paginated.view-dto';
@@ -9,7 +9,9 @@ import { UserViewDto } from '../../dto/users.view-dto';
 
 @Injectable()
 export class UsersQueryRepository {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(UserModel.name) private userModel: Model<UserDocument>,
+  ) {}
   async findById(id: string) {
     const user = await this.userModel.findById(id);
     if (!user) {
