@@ -4,6 +4,7 @@ import { PostDocument, PostModel } from '../schemas/post.schema';
 import { Model } from 'mongoose';
 import { Post } from '../../domain/entities/post.entity';
 import { PostInputDto } from '../../dto/post.input.dto';
+import { PostViewDto } from '../../dto/post.view-dto';
 
 @Injectable()
 export class PostsRepository {
@@ -13,7 +14,7 @@ export class PostsRepository {
   ) {}
   async create(newPostData: Post) {
     const newPost = await this.postModel.create(newPostData);
-    return newPost.toObject();
+    return PostViewDto.mapToView(newPost);
   }
 
   async update(id: string, dto: PostInputDto): Promise<void> {

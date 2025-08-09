@@ -15,7 +15,7 @@ export class PostViewDto {
     dto.blogId = post.blogId;
     dto.title = post.title;
     dto.content = post.content;
-    dto.blogId = post.blogId;
+    dto.blogName = post.blogName;
     dto.shortDescription = post.shortDescription;
     dto.id = post._id.toString();
     return dto;

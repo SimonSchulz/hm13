@@ -19,6 +19,8 @@ export class PostModel {
 
   @Prop({ required: true, default: () => new Date().toISOString() })
   createdAt!: string;
+  @Prop()
+  blogName?: string;
 }
 
 export const PostSchema = SchemaFactory.createForClass(PostModel);

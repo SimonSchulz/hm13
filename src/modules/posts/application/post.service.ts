@@ -12,7 +12,7 @@ export class PostService {
     private readonly postsRepository: PostsRepository,
     private readonly blogsQueryRepository: BlogsQueryRepository,
   ) {}
-  async create(dto: PostInputDto): Promise<WithId<Post>> {
+  async create(dto: PostInputDto) {
     const newPost = new Post(
       dto.title,
       dto.shortDescription,
@@ -22,10 +22,7 @@ export class PostService {
     return this.postsRepository.create(newPost);
   }
 
-  async createByBlogId(
-    dto: PostInputWithoutBlogIdDto,
-    blogId: string,
-  ): Promise<WithId<Post>> {
+  async createByBlogId(dto: PostInputWithoutBlogIdDto, blogId: string) {
     const blog = await this.blogsQueryRepository.findById(blogId);
     if (!blog) {
       throw new NotFoundException('Blog not found');
@@ -37,6 +34,7 @@ export class PostService {
       dto.shortDescription,
       dto.content,
       blogId,
+      blogName,
     );
     return this.postsRepository.create(newPost);
   }
