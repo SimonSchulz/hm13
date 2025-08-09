@@ -8,6 +8,7 @@ import { Model, Types } from 'mongoose';
 import { BlogDocument, BlogModel } from '../schemas/blog.schema';
 import { Blog } from '../../domain/entities/blog.entity';
 import { BlogInputDto } from '../../dto/blog.input-dto';
+import { BlogViewDto } from '../../dto/blog.view-dto';
 
 @Injectable()
 export class BlogsRepository {
@@ -17,7 +18,7 @@ export class BlogsRepository {
   ) {}
   async create(newBlog: Partial<Blog>): Promise<Blog> {
     const createdBlog = await this.blogModel.create(newBlog);
-    return createdBlog.toObject();
+    return BlogViewDto.mapToView(createdBlog);
   }
 
   async update(id: string, dto: BlogInputDto): Promise<void> {
@@ -38,10 +39,6 @@ export class BlogsRepository {
   }
 
   async delete(id: string): Promise<void> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new BadRequestException('Invalid Blog id');
-    }
-
     const deleteResult = await this.blogModel.deleteOne({ _id: id });
     if (deleteResult.deletedCount < 1) {
       throw new NotFoundException('Blog not exist');

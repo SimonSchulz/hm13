@@ -9,7 +9,7 @@ export class Blog {
     this.name = name;
     this.description = description;
     this.websiteUrl = websiteUrl;
-    this.isMembership = true;
+    this.isMembership = false;
     this.createdAt = new Date().toISOString();
   }
 }

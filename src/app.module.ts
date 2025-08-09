@@ -7,6 +7,7 @@ import { TestingModule } from './modules/testing/testing.module';
 import { UsersModule } from './modules/users/users.module';
 import { PostsModule } from './modules/posts/posts.module';
 import { CommentsModule } from './modules/comments/comments.module';
+import { BlogsModule } from './modules/blogs/blogs.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { CommentsModule } from './modules/comments/comments.module';
     UsersModule,
     PostsModule,
     CommentsModule,
+    BlogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

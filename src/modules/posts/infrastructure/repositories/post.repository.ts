@@ -36,7 +36,6 @@ export class PostsRepository {
 
   async delete(id: string): Promise<void> {
     const result = await this.postModel.deleteOne({ _id: id });
-
     if (result.deletedCount < 1) {
       throw new NotFoundException('Post not exist');
     }

@@ -17,8 +17,6 @@ export class UsersService {
   }
 
   async delete(id: string): Promise<boolean> {
-    const user = await this.usersQueryRepository.findById(id);
-    if (!user) return false;
     return this.usersRepository.delete(id);
   }
 }
