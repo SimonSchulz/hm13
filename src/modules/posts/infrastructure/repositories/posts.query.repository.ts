@@ -29,7 +29,7 @@ export class PostsQueryRepository {
     if (query.searchNameTerm) {
       filter.$or = filter.$or || [];
       filter.$or.push({
-        login: { $regex: query.searchNameTerm, $options: 'i' },
+        title: { $regex: query.searchNameTerm, $options: 'i' },
       });
     }
 

@@ -4,7 +4,6 @@ import { FilterQuery, Model } from 'mongoose';
 import { BlogDocument, BlogModel } from '../schemas/blog.schema';
 import { Blog } from '../../domain/entities/blog.entity';
 import { BlogsQueryParams } from '../../dto/blogs-query-params.input-dto';
-import { Post } from '../../../posts/domain/entities/post.entity';
 import { PaginatedViewDto } from '../../../../core/dto/base.paginated.view-dto';
 import { BlogViewDto } from '../../dto/blog.view-dto';
 
@@ -16,14 +15,14 @@ export class BlogsQueryRepository {
   ) {}
 
   async findAllBlogs(query: BlogsQueryParams) {
-    const filter: FilterQuery<Post> = {
+    const filter: FilterQuery<Blog> = {
       deletedAt: null,
     };
 
     if (query.searchNameTerm) {
       filter.$or = filter.$or || [];
       filter.$or.push({
-        login: { $regex: query.searchNameTerm, $options: 'i' },
+        name: { $regex: query.searchNameTerm, $options: 'i' },
       });
     }
 
