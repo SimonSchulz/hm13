@@ -53,12 +53,17 @@ export class PostsQueryRepository {
   async findPostsByBlogId(blogId: string, query: PostsQueryParams) {
     const filter = { blogId };
     const totalCount = await this.postModel.countDocuments(filter);
-    const items = await this.postModel
+    const posts = await this.postModel
       .find(filter)
       .sort({ [query.sortBy]: query.sortDirection })
       .skip(query.calculateSkip())
       .limit(query.pageSize);
-
-    return { items, totalCount };
+    const items = posts.map((user) => PostViewDto.mapToView(user));
+    return PaginatedViewDto.mapToView({
+      items,
+      totalCount,
+      page: query.pageNumber,
+      size: query.pageSize,
+    });
   }
 }
