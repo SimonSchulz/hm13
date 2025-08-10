@@ -7,8 +7,7 @@ import {
   Param,
   Body,
   Query,
-  UseGuards,
-  Req,
+  HttpCode,
 } from '@nestjs/common';
 import { BlogService } from '../application/blog.service';
 import { BlogsQueryRepository } from '../infrastructure/repositories/blogs.query.repository';
@@ -18,6 +17,7 @@ import { PostsQueryParams } from '../../posts/dto/posts-query-params.input-dto';
 import { PostsQueryRepository } from '../../posts/infrastructure/repositories/posts.query.repository';
 import { PostService } from '../../posts/application/post.service';
 import { PostInputWithoutBlogIdDto } from '../../posts/dto/post.input-without-blogId.dto';
+import { HttpStatuses } from '../../../core/enums/http-statuses';
 
 @Controller('blogs')
 export class BlogsController {
@@ -60,11 +60,13 @@ export class BlogsController {
   }
 
   @Put(':id')
+  @HttpCode(HttpStatuses.NoContent)
   updateBlog(@Param('id') id: string, @Body() dto: BlogInputDto) {
     return this.blogService.update(id, dto);
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatuses.NoContent)
   deleteBlog(@Param('id') id: string) {
     return this.blogService.delete(id);
   }

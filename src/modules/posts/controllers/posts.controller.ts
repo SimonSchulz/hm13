@@ -7,6 +7,7 @@ import {
   Param,
   Body,
   Query,
+  HttpCode,
 } from '@nestjs/common';
 import { PostService } from '../application/post.service';
 import { LikesService } from '../../likes/application/likes.service';
@@ -16,6 +17,7 @@ import { LikesInputDto } from '../../likes/dto/likes.input.dto';
 import { PostsQueryParams } from '../dto/posts-query-params.input-dto';
 import { CommentsQueryRepository } from '../../comments/infrastructure/repositories/comments.query.repository';
 import { CommentsQueryParams } from '../../comments/dto/comments-query-params.input.dto';
+import { HttpStatuses } from '../../../core/enums/http-statuses';
 
 @Controller('posts')
 export class PostsController {
@@ -58,11 +60,13 @@ export class PostsController {
   // }
 
   @Put(':id')
+  @HttpCode(HttpStatuses.NoContent)
   async updatePost(@Param('id') id: string, @Body() dto: PostInputDto) {
     await this.postsService.update(id, dto);
   }
 
   @Put(':postId/like-status')
+  @HttpCode(HttpStatuses.NoContent)
   async updateLikeStatus(
     @Param('postId') postId: string,
     @Body() dto: LikesInputDto,
@@ -73,6 +77,7 @@ export class PostsController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatuses.NoContent)
   async deletePost(@Param('id') id: string) {
     await this.postsService.delete(id);
   }
