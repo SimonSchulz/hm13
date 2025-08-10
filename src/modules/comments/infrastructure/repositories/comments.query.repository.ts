@@ -5,6 +5,7 @@ import { CommentDocument, CommentModel } from '../schemas/comment.schema';
 import { CommentsQueryParams } from '../../dto/comments-query-params.input.dto';
 import { PaginatedViewDto } from '../../../../core/dto/base.paginated.view-dto';
 import { CommentsViewDto } from '../../dto/comments.view-dto';
+import { LikesInfo } from '../../../likes/dto/likes-info.dto';
 @Injectable()
 export class CommentsQueryRepository {
   constructor(
@@ -25,8 +26,10 @@ export class CommentsQueryRepository {
       .limit(query.pageSize);
 
     const totalCount = await this.commentModel.countDocuments(filter).exec();
-
-    const items = comments.map((user) => CommentsViewDto.mapToView(user));
+    const likesInfo = LikesInfo.defaultValues();
+    const items = comments.map((comment) =>
+      CommentsViewDto.mapToView(comment, likesInfo),
+    );
 
     return PaginatedViewDto.mapToView({
       items,

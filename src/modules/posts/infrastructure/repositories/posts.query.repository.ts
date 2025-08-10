@@ -6,6 +6,7 @@ import { PostDocument, PostModel } from '../schemas/post.schema';
 import { PostsQueryParams } from '../../dto/posts-query-params.input-dto';
 import { PostViewDto } from '../../dto/post.view-dto';
 import { Post } from '../../domain/entities/post.entity';
+import { ExtendedLikesInfo } from '../../../likes/dto/extended-likes-info.dto';
 
 @Injectable()
 export class PostsQueryRepository {
@@ -17,7 +18,8 @@ export class PostsQueryRepository {
     if (!post) {
       throw new NotFoundException('post not found');
     }
-    return PostViewDto.mapToView(post);
+    const extendedLikesInfo = ExtendedLikesInfo.defaultValues();
+    return PostViewDto.mapToView(post, extendedLikesInfo);
   }
   async findAllPosts(
     query: PostsQueryParams,
@@ -40,8 +42,10 @@ export class PostsQueryRepository {
       .limit(query.pageSize);
 
     const totalCount = await this.postModel.countDocuments(filter);
-
-    const items = posts.map((user) => PostViewDto.mapToView(user));
+    const extendedLikesInfo = ExtendedLikesInfo.defaultValues();
+    const items = posts.map((user) =>
+      PostViewDto.mapToView(user, extendedLikesInfo),
+    );
 
     return PaginatedViewDto.mapToView({
       items,
@@ -58,7 +62,10 @@ export class PostsQueryRepository {
       .sort({ [query.sortBy]: query.sortDirection })
       .skip(query.calculateSkip())
       .limit(query.pageSize);
-    const items = posts.map((user) => PostViewDto.mapToView(user));
+    const extendedLikesInfo = ExtendedLikesInfo.defaultValues();
+    const items = posts.map((post) =>
+      PostViewDto.mapToView(post, extendedLikesInfo),
+    );
     return PaginatedViewDto.mapToView({
       items,
       totalCount,

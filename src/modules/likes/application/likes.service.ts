@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { LikesRepository } from '../infrasructure/repositories/likes.repository';
 import { LikeStatus } from '../dto/likes.type';
-import { likesInfo } from '../dto/likes-info.type';
-import { extendedLikesInfo } from '../dto/extended-likes-info.type';
+import { LikesInfo } from '../dto/likes-info.dto';
+import { ExtendedLikesInfo } from '../dto/extended-likes-info.dto';
 import { PostsQueryRepository } from '../../posts/infrastructure/repositories/posts.query.repository';
 import { CommentsQueryRepository } from '../../comments/infrastructure/repositories/comments.query.repository';
 
@@ -14,7 +14,7 @@ export class LikesService {
     private readonly postsQueryRepository: PostsQueryRepository,
   ) {}
 
-  async getLikesInfo(targetId: string, userId?: string): Promise<likesInfo> {
+  async getLikesInfo(targetId: string, userId?: string): Promise<LikesInfo> {
     const [likesCount, dislikesCount, myStatus] = await Promise.all([
       this.likesRepo.countLikes(targetId, LikeStatus.Like),
       this.likesRepo.countLikes(targetId, LikeStatus.Dislike),
@@ -26,7 +26,7 @@ export class LikesService {
   async getExtendedLikesInfo(
     targetId: string,
     userId?: string,
-  ): Promise<extendedLikesInfo> {
+  ): Promise<ExtendedLikesInfo> {
     const [likesCount, dislikesCount, myStatus, newestLikes] =
       await Promise.all([
         this.likesRepo.countLikes(targetId, LikeStatus.Like),

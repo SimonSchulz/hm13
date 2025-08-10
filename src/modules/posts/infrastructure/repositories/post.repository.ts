@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { Post } from '../../domain/entities/post.entity';
 import { PostInputDto } from '../../dto/post.input.dto';
 import { PostViewDto } from '../../dto/post.view-dto';
-
+import { ExtendedLikesInfo } from '../../../likes/dto/extended-likes-info.dto';
 @Injectable()
 export class PostsRepository {
   constructor(
@@ -14,7 +14,8 @@ export class PostsRepository {
   ) {}
   async create(newPostData: Post) {
     const newPost = await this.postModel.create(newPostData);
-    return PostViewDto.mapToView(newPost);
+    const extendedLikesInfo = ExtendedLikesInfo.defaultValues();
+    return PostViewDto.mapToView(newPost, extendedLikesInfo);
   }
 
   async update(id: string, dto: PostInputDto): Promise<void> {
