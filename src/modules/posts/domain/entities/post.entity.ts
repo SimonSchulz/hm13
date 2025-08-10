@@ -10,7 +10,7 @@ export class Post {
     shortDescription: string,
     content: string,
     blogId: string,
-    blogName?: string,
+    blogName: string,
   ) {
     this.title = title;
     this.shortDescription = shortDescription;

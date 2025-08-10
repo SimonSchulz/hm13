@@ -7,7 +7,7 @@ export class PostViewDto {
   shortDescription!: string;
   content!: string;
   blogId!: string;
-  blogName?: string;
+  blogName!: string;
   createdAt!: string;
   extendedLikesInfo!: ExtendedLikesInfo;
 

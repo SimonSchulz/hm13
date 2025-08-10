@@ -13,11 +13,16 @@ export class PostService {
     private readonly blogsQueryRepository: BlogsQueryRepository,
   ) {}
   async create(dto: PostInputDto) {
+    const blog = await this.blogsQueryRepository.findById(dto.blogId);
+    if (!blog) {
+      throw new NotFoundException('Blog not found');
+    }
     const newPost = new Post(
       dto.title,
       dto.shortDescription,
       dto.content,
       dto.blogId,
+      blog.name,
     );
     return this.postsRepository.create(newPost);
   }

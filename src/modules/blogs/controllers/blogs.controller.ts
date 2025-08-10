@@ -8,6 +8,7 @@ import {
   Body,
   Query,
   HttpCode,
+  NotFoundException,
 } from '@nestjs/common';
 import { BlogService } from '../application/blog.service';
 import { BlogsQueryRepository } from '../infrastructure/repositories/blogs.query.repository';
@@ -39,10 +40,14 @@ export class BlogsController {
   }
 
   @Get(':blogId/posts')
-  getPostsByBlogId(
+  async getPostsByBlogId(
     @Param('blogId') blogId: string,
     @Query() query: PostsQueryParams,
   ) {
+    const blog = await this.blogsQueryRepository.findById(blogId);
+    if (!blog) {
+      throw new NotFoundException('Blog not found');
+    }
     return this.postsQueryRepository.findPostsByBlogId(blogId, query);
   }
 
@@ -52,10 +57,14 @@ export class BlogsController {
   }
 
   @Post(':blogId/posts')
-  createPostByBlogId(
+  async createPostByBlogId(
     @Param('blogId') blogId: string,
     @Body() dto: PostInputWithoutBlogIdDto,
   ) {
+    const blog = await this.blogsQueryRepository.findById(blogId);
+    if (!blog) {
+      throw new NotFoundException('Blog not found');
+    }
     return this.postService.createByBlogId(dto, blogId);
   }
 
